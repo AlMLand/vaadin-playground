@@ -1,3 +1,5 @@
+import com.vaadin.gradle.vaadin
+
 plugins {
 	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.6"
@@ -9,14 +11,8 @@ plugins {
 group = "com.almland"
 version = "0.0.1-SNAPSHOT"
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
-
-repositories {
-	mavenCentral()
+vaadin {
+	frontendDirectory = File(project.rootDir, "fronted-app")
 }
 
 extra["vaadinVersion"] = "24.4.7"
@@ -38,6 +34,16 @@ dependencyManagement {
 	imports {
 		mavenBom("com.vaadin:vaadin-bom:${property("vaadinVersion")}")
 	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
 }
 
 kotlin {
