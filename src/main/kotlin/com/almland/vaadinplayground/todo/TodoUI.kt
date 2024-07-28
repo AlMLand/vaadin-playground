@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.H2
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextField
@@ -38,6 +39,7 @@ internal class TodoUI(
                 addClickListener { createAddDialog().open() }
             }.also { horizontalLayout.add(it) }
             Button("Remove").apply {
+                isVisible = userName.startsWith('a')
                 addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_SMALL)
                 addClickListener {
                     inMemoryRepository.removeTodos(view.selectedItems)
@@ -54,6 +56,20 @@ internal class TodoUI(
                 refreshTodos()
                 add(it)
             }
+
+        HorizontalLayout().also { horizontalLayout ->
+            Button("Select all").apply {
+                addThemeVariants(ButtonVariant.LUMO_TERTIARY)
+                icon = VaadinIcon.PLUS.create()
+                addClickListener { view.asMultiSelect().select(inMemoryRepository.getTodos()) }
+            }.also { horizontalLayout.add(it) }
+            Button("Deselect all").apply {
+                addThemeVariants(ButtonVariant.LUMO_TERTIARY)
+                icon = VaadinIcon.MINUS.create()
+                addClickListener { view.asMultiSelect().deselectAll() }
+            }.also { horizontalLayout.add(it) }
+            add(horizontalLayout)
+        }
     }
 
     private fun refreshTodos() {
