@@ -47,17 +47,17 @@ internal class TodoUI(
             add(horizontalLayout)
         }
 
-        view = Grid(Todo::class.java)
+        Grid(Todo::class.java)
             .apply { setSelectionMode(Grid.SelectionMode.MULTI) }
             .also {
-                refreshTodos(it)
+                view = it
+                refreshTodos()
                 add(it)
             }
     }
 
-    private fun refreshTodos(view: Grid<Todo>? = null) {
-        (view.takeIf { it != null } ?: this.view)
-            .setItems(inMemoryRepository.getTodos())
+    private fun refreshTodos() {
+        view.setItems(inMemoryRepository.getTodos())
     }
 
     private fun createAddDialog(): Dialog =
