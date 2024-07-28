@@ -2,7 +2,10 @@ package com.almland.vaadinplayground.todo
 
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
+import com.almland.vaadinplayground.todo.service.Broadcaster.broadcast
+import com.almland.vaadinplayground.todo.service.Broadcaster.register
 import com.vaadin.flow.component.AttachEvent
+import com.vaadin.flow.component.DetachEvent
 import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -10,6 +13,7 @@ import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextField
@@ -17,6 +21,7 @@ import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.Route
+import com.vaadin.flow.shared.Registration
 
 private const val USER_NAME_PARAMETER = "name"
 
@@ -27,8 +32,9 @@ internal class TodoUI(
 
     private lateinit var userName: String
     private lateinit var view: Grid<Todo>
+    private lateinit var broadcastRegistration: Registration
 
-    override fun onAttach(attachEvent: AttachEvent?) {
+    override fun onAttach(attachEvent: AttachEvent) {
         super.onAttach(attachEvent)
 
         H2("Todo application: $userName").also { title -> add(title) }
@@ -43,7 +49,7 @@ internal class TodoUI(
                 addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_SMALL)
                 addClickListener {
                     inMemoryRepository.removeTodos(view.selectedItems)
-                    refreshTodos()
+                    broadcast("Todo(s) removed by $userName")
                 }
             }.also { horizontalLayout.add(it) }
             add(horizontalLayout)
@@ -70,6 +76,15 @@ internal class TodoUI(
             }.also { horizontalLayout.add(it) }
             add(horizontalLayout)
         }
+
+        attachEvent.ui.also { ui ->
+            broadcastRegistration = register { message ->
+                ui.access {
+                    refreshTodos()
+                    Notification.show(message, 2000, Notification.Position.BOTTOM_CENTER)
+                }
+            }
+        }
     }
 
     private fun refreshTodos() {
@@ -91,7 +106,7 @@ internal class TodoUI(
                         addClickListener {
                             inMemoryRepository.addTodo(Todo(title.value, title.value, userName))
                             dialog.close()
-                            refreshTodos()
+                            broadcast("Todo added by $userName")
                         }
                     }
                     .also { addButton -> dialog.footer.add(addButton) }
@@ -111,4 +126,9 @@ internal class TodoUI(
     }
 
     override fun getPageTitle(): String = "todo: $userName"
+
+    override fun onDetach(detachEvent: DetachEvent) {
+        super.onDetach(detachEvent)
+        broadcastRegistration.remove()
+    }
 }
