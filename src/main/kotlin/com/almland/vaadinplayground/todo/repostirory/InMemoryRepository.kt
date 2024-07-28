@@ -33,5 +33,5 @@ internal class InMemoryRepository {
         TODOS.removeAll(todos)
     }
 
-    fun getTodos(): MutableCollection<Todo> = TODOS
+    fun getTodos(): Collection<Todo> = TODOS
 }
