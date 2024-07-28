@@ -16,12 +16,15 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
+import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.Route
 
 private const val USER_NAME_PARAMETER = "name"
 
 @Route("todos/:$USER_NAME_PARAMETER")
-internal class TodoUI(private val inMemoryRepository: InMemoryRepository) : VerticalLayout(), BeforeEnterObserver {
+internal class TodoUI(
+    private val inMemoryRepository: InMemoryRepository
+) : VerticalLayout(), BeforeEnterObserver, HasDynamicTitle {
 
     private lateinit var userName: String
     private lateinit var view: Grid<Todo>
@@ -89,4 +92,6 @@ internal class TodoUI(private val inMemoryRepository: InMemoryRepository) : Vert
             }
             ?: "no user name available"
     }
+
+    override fun getPageTitle(): String = "todo: $userName"
 }
