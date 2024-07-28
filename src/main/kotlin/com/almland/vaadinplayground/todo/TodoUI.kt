@@ -3,10 +3,7 @@ package com.almland.vaadinplayground.todo
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.Key.ENTER
-import com.vaadin.flow.component.Key.EXIT
-import com.vaadin.flow.component.Key.KEY_A
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
