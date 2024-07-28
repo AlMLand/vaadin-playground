@@ -3,11 +3,9 @@ package com.almland.vaadinplayground.todo
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
 import com.vaadin.flow.component.AttachEvent
-import com.vaadin.flow.component.Key.ENTER
+import com.vaadin.flow.component.Key
 import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
-import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
-import com.vaadin.flow.component.button.ButtonVariant.LUMO_SUCCESS
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.H2
@@ -36,11 +34,11 @@ internal class TodoUI(
 
         HorizontalLayout().also { horizontalLayout ->
             Button("Add new").apply {
-                addThemeVariants(LUMO_SUCCESS, LUMO_SMALL)
+                addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_SMALL)
                 addClickListener { createAddDialog().open() }
             }.also { horizontalLayout.add(it) }
             Button("Remove").apply {
-                addThemeVariants(LUMO_ERROR, LUMO_SMALL)
+                addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_SMALL)
                 addClickListener {
                     inMemoryRepository.removeTodos(view.selectedItems)
                     refreshTodos()
@@ -51,12 +49,15 @@ internal class TodoUI(
 
         view = Grid(Todo::class.java)
             .apply { setSelectionMode(Grid.SelectionMode.MULTI) }
-        refreshTodos()
-        add(view)
+            .also {
+                refreshTodos(it)
+                add(it)
+            }
     }
 
-    private fun refreshTodos() {
-        view.setItems(inMemoryRepository.getTodos())
+    private fun refreshTodos(view: Grid<Todo>? = null) {
+        (view.takeIf { it != null } ?: this.view)
+            .setItems(inMemoryRepository.getTodos())
     }
 
     private fun createAddDialog(): Dialog =
@@ -70,7 +71,7 @@ internal class TodoUI(
                     .also { dialogLayout -> dialog.add(dialogLayout) }
                 Button("Add")
                     .apply {
-                        addFocusShortcut(ENTER)
+                        addFocusShortcut(Key.ENTER)
                         addClickListener {
                             inMemoryRepository.addTodo(Todo(title.value, title.value, userName))
                             dialog.close()
