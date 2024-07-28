@@ -29,5 +29,9 @@ internal class InMemoryRepository {
         TODOS.add(todo)
     }
 
-    fun getTodos(): Collection<Todo> = TODOS
+    fun removeTodos(todos: Set<Todo>) {
+        TODOS.removeAll(todos)
+    }
+
+    fun getTodos(): MutableCollection<Todo> = TODOS
 }

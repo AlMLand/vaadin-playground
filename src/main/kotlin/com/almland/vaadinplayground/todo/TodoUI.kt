@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Key.ENTER
 import com.vaadin.flow.component.Key.EXIT
 import com.vaadin.flow.component.Key.KEY_A
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SUCCESS
 import com.vaadin.flow.component.dialog.Dialog
@@ -33,14 +34,23 @@ internal class TodoUI(private val inMemoryRepository: InMemoryRepository) : Vert
 
         H2("Todo application: $userName").also { title -> add(title) }
 
-        Button("Add new")
-            .apply {
+        HorizontalLayout().also { horizontalLayout ->
+            Button("Add new").apply {
                 addThemeVariants(LUMO_SUCCESS, LUMO_SMALL)
                 addClickListener { createAddDialog().open() }
-            }
-            .also { button -> add(HorizontalLayout(button)) }
+            }.also { horizontalLayout.add(it) }
+            Button("Remove").apply {
+                addThemeVariants(LUMO_ERROR, LUMO_SMALL)
+                addClickListener {
+                    inMemoryRepository.removeTodos(view.selectedItems)
+                    refreshTodos()
+                }
+            }.also { horizontalLayout.add(it) }
+            add(horizontalLayout)
+        }
 
         view = Grid(Todo::class.java)
+            .apply { setSelectionMode(Grid.SelectionMode.MULTI) }
         refreshTodos()
         add(view)
     }
