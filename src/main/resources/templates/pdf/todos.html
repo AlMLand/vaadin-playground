@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Todo list</title>
+    <style>
+        table th {
+            font-weight: bold;
+            background-color: aqua;
+            border: 1px solid black;
+        }
+
+        table td {
+            border-bottom: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 <!--/*@thymesVar id="title" type="kotlin.String"*/-->
@@ -20,5 +31,9 @@
         <td th:text="${item.author}"></td>
     </tr>
 </table>
+<div style="padding-top: 30px">
+    <!--/*@thymesVar id="kenny" type="custom image"*/-->
+    <img th:src="${kenny}" alt="Kenny McCormick" width="100" height="100"/>
+</div>
 </body>
 </html>
