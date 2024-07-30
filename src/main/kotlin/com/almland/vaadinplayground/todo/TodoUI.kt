@@ -2,7 +2,7 @@ package com.almland.vaadinplayground.todo
 
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
-import com.almland.vaadinplayground.todo.service.export.ExcelConverter
+import com.almland.vaadinplayground.todo.service.export.excel.ExcelGenerator
 import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.broadcast
 import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.register
 import com.vaadin.flow.component.AttachEvent
@@ -32,7 +32,7 @@ private const val USER_NAME_PARAMETER = "name"
 
 @Route("todos/:$USER_NAME_PARAMETER")
 internal class TodoUI(
-    private val excelConverter: ExcelConverter,
+    private val excelGenerator: ExcelGenerator,
     private val inMemoryRepository: InMemoryRepository
 ) : VerticalLayout(), BeforeEnterObserver, HasDynamicTitle {
 
@@ -110,7 +110,7 @@ internal class TodoUI(
 
     private fun getInputStream(): () -> ByteArrayInputStream = {
         ByteArrayOutputStream()
-            .apply { excelConverter.createExcelFile(view.selectedItems).write(this) }
+            .apply { excelGenerator.createExcelFile(view.selectedItems).write(this) }
             .let { ByteArrayInputStream(it.toByteArray()) }
     }
 

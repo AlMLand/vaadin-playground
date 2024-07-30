@@ -1,4 +1,4 @@
-package com.almland.vaadinplayground.todo.service.export
+package com.almland.vaadinplayground.todo.service.export.excel
 
 import com.almland.vaadinplayground.todo.domain.Todo
 import org.apache.poi.ss.usermodel.BorderStyle
@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Service
 
 @Service
-internal class ExcelConverter {
+internal class ExcelGenerator {
 
     companion object {
         private const val ROW_HEADER_INDEX = 0
