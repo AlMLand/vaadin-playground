@@ -1,4 +1,4 @@
-package com.almland.vaadinplayground.todo.service
+package com.almland.vaadinplayground.todo.service.synchroniseuibychanges
 
 import com.vaadin.flow.shared.Registration
 import java.util.LinkedList
