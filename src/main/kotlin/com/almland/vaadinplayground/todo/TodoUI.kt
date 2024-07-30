@@ -56,7 +56,10 @@ internal class TodoUI(
         }
 
         Grid(Todo::class.java)
-            .apply { setSelectionMode(Grid.SelectionMode.MULTI) }
+            .apply {
+                isAllRowsVisible = true
+                setSelectionMode(Grid.SelectionMode.MULTI)
+            }
             .also {
                 view = it
                 refreshTodos()
