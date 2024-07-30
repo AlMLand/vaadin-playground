@@ -17,15 +17,20 @@ vaadin {
 
 extra["vaadinVersion"] = "24.4.7"
 extra["poiOoxmlVersion"] = "5.3.0"
+extra["flyingSaucerPdfItext5"] = "9.7.2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.vaadin:vaadin-spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // excel
     implementation("org.apache.poi:poi-ooxml:${property("poiOoxmlVersion")}")
+    // pdf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf-itext5:${property("flyingSaucerPdfItext5")}")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

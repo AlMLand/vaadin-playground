@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Todo list</title>
+</head>
+<body>
+<!--/*@thymesVar id="title" type="kotlin.String"*/-->
+<h2 th:text="${title}"></h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Body</th>
+        <th>Author</th>
+    </tr>
+    <!--/*@thymesVar id="items" type="java.util.Collection<com.almland.vaadinplayground.todo.domain.Todo>"*/-->
+    <tr th:each="item:${items}">
+        <td th:text="${item.title}"></td>
+        <td th:text="${item.body}"></td>
+        <td th:text="${item.author}"></td>
+    </tr>
+</table>
+</body>
+</html>

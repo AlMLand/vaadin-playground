@@ -3,6 +3,7 @@ package com.almland.vaadinplayground.todo
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
 import com.almland.vaadinplayground.todo.service.export.excel.ExcelGenerator
+import com.almland.vaadinplayground.todo.service.export.pdf.PdfGenerator
 import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.broadcast
 import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.register
 import com.vaadin.flow.component.AttachEvent
@@ -29,9 +30,11 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 private const val USER_NAME_PARAMETER = "name"
+private const val OPEN_PDF_IN_NEW_TAB = "_blank"
 
 @Route("todos/:$USER_NAME_PARAMETER")
 internal class TodoUI(
+    private val pdfGenerator: PdfGenerator,
     private val excelGenerator: ExcelGenerator,
     private val inMemoryRepository: InMemoryRepository
 ) : VerticalLayout(), BeforeEnterObserver, HasDynamicTitle {
@@ -60,15 +63,22 @@ internal class TodoUI(
                 }
             }.also { horizontalLayout.add(it) }
 
-            Anchor(
-                StreamResource("todos.xlsx", getInputStream()),
-                null
-            ).also { downloadExcel ->
-                Button("Export selected to Excel")
-                    .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
-                    .also { downloadExcel.add(it) }
-                horizontalLayout.add(downloadExcel)
-            }
+            Anchor(StreamResource("todos.xlsx", getInputStreamExcel()), null)
+                .also { downloadExcel ->
+                    Button("Export selected to Excel")
+                        .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
+                        .also { downloadExcel.add(it) }
+                    horizontalLayout.add(downloadExcel)
+                }
+
+            Anchor(StreamResource("todos.pdf", getInputStreamPdf()), null)
+                .apply { setTarget(OPEN_PDF_IN_NEW_TAB) }
+                .also { downloadPdf ->
+                    Button("Export selected to PDF")
+                        .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
+                        .also { downloadPdf.add(it) }
+                    horizontalLayout.add(downloadPdf)
+                }
 
             add(horizontalLayout)
         }
@@ -108,7 +118,10 @@ internal class TodoUI(
         }
     }
 
-    private fun getInputStream(): () -> ByteArrayInputStream = {
+    private fun getInputStreamPdf(): () -> ByteArrayInputStream =
+        { ByteArrayInputStream(pdfGenerator.createPdf(view.selectedItems).toByteArray()) }
+
+    private fun getInputStreamExcel(): () -> ByteArrayInputStream = {
         ByteArrayOutputStream()
             .apply { excelGenerator.createExcelFile(view.selectedItems).write(this) }
             .let { ByteArrayInputStream(it.toByteArray()) }
