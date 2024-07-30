@@ -2,8 +2,9 @@ package com.almland.vaadinplayground.todo
 
 import com.almland.vaadinplayground.todo.domain.Todo
 import com.almland.vaadinplayground.todo.repostirory.InMemoryRepository
-import com.almland.vaadinplayground.todo.service.Broadcaster.broadcast
-import com.almland.vaadinplayground.todo.service.Broadcaster.register
+import com.almland.vaadinplayground.todo.service.export.ExcelConverter
+import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.broadcast
+import com.almland.vaadinplayground.todo.service.synchroniseuibychanges.Broadcaster.register
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.DetachEvent
 import com.vaadin.flow.component.Key
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
@@ -21,12 +23,16 @@ import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.HasDynamicTitle
 import com.vaadin.flow.router.Route
+import com.vaadin.flow.server.StreamResource
 import com.vaadin.flow.shared.Registration
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 private const val USER_NAME_PARAMETER = "name"
 
 @Route("todos/:$USER_NAME_PARAMETER")
 internal class TodoUI(
+    private val excelConverter: ExcelConverter,
     private val inMemoryRepository: InMemoryRepository
 ) : VerticalLayout(), BeforeEnterObserver, HasDynamicTitle {
 
@@ -44,6 +50,7 @@ internal class TodoUI(
                 addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_SMALL)
                 addClickListener { createAddDialog().open() }
             }.also { horizontalLayout.add(it) }
+
             Button("Remove").apply {
                 isVisible = userName.startsWith('a')
                 addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_SMALL)
@@ -52,6 +59,17 @@ internal class TodoUI(
                     broadcast("Todo(s) removed by $userName")
                 }
             }.also { horizontalLayout.add(it) }
+
+            Anchor(
+                StreamResource("todos.xlsx", getInputStream()),
+                null
+            ).also { downloadExcel ->
+                Button("Export selected to Excel")
+                    .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
+                    .also { downloadExcel.add(it) }
+                horizontalLayout.add(downloadExcel)
+            }
+
             add(horizontalLayout)
         }
 
@@ -88,6 +106,12 @@ internal class TodoUI(
                 }
             }
         }
+    }
+
+    private fun getInputStream(): () -> ByteArrayInputStream = {
+        ByteArrayOutputStream()
+            .apply { excelConverter.createExcelFile(view.selectedItems).write(this) }
+            .let { ByteArrayInputStream(it.toByteArray()) }
     }
 
     private fun refreshTodos() {
