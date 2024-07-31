@@ -20,7 +20,7 @@ internal object BarcodeUtils {
         try {
             ImageUtils
                 .convertImageToBase64(
-                    getBarCode(text).toByteArray(),
+                    getBarCode(text).use { it.toByteArray() },
                     IMAGE_PNG
                 )
         } catch (ioE: IOException) {

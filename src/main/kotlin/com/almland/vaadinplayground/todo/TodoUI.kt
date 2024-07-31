@@ -119,12 +119,12 @@ internal class TodoUI(
     }
 
     private fun getInputStreamPdf(): () -> ByteArrayInputStream =
-        { ByteArrayInputStream(pdfGenerator.createPdf(view.selectedItems).toByteArray()) }
+        { ByteArrayInputStream(pdfGenerator.createPdf(view.selectedItems).use { it.toByteArray() }) }
 
     private fun getInputStreamExcel(): () -> ByteArrayInputStream = {
         ByteArrayOutputStream()
             .apply { excelGenerator.createExcelFile(view.selectedItems).write(this) }
-            .let { ByteArrayInputStream(it.toByteArray()) }
+            .let { ByteArrayInputStream(it.use { stream -> stream.toByteArray() }) }
     }
 
     private fun refreshTodos() {

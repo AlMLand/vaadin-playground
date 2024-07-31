@@ -21,7 +21,7 @@ internal object ImageUtils {
             ?.let { url ->
                 Base64
                     .getEncoder()
-                    .encodeToString(IOUtils.toByteArray(url.openStream()))
+                    .encodeToString(url.openStream().use { IOUtils.toByteArray(it) })
                     .let { imageBase64 -> "data:image/$imageFormat;base64,$imageBase64" }
             }
             ?: "no image"
