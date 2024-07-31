@@ -18,6 +18,7 @@ vaadin {
 extra["vaadinVersion"] = "24.4.7"
 extra["poiOoxmlVersion"] = "5.3.0"
 extra["flyingSaucerPdfItext5"] = "9.7.2"
+extra["googleZxing"] = "3.5.3"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
@@ -30,6 +31,9 @@ dependencies {
     // pdf
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.xhtmlrenderer:flying-saucer-pdf-itext5:${property("flyingSaucerPdfItext5")}")
+    // barcode in pdf
+    implementation("com.google.zxing:core:${property("googleZxing")}")
+    implementation("com.google.zxing:javase:${property("googleZxing")}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

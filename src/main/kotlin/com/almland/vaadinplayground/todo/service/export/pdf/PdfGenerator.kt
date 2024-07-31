@@ -1,6 +1,7 @@
 package com.almland.vaadinplayground.todo.service.export.pdf
 
 import com.almland.vaadinplayground.todo.domain.Todo
+import com.almland.vaadinplayground.todo.service.export.pdf.barcode.BarcodeUtils
 import com.almland.vaadinplayground.todo.service.export.pdf.image.ImageUtils
 import java.io.ByteArrayOutputStream
 import org.springframework.stereotype.Service
@@ -20,7 +21,8 @@ internal class PdfGenerator(private val springTemplateEngine: SpringTemplateEngi
                     mapOf(
                         "items" to todos,
                         "title" to "Todos list ${todos.size}",
-                        "kenny" to ImageUtils.convertImageToBase64("pdf/images/kenny.png")
+                        "kenny" to ImageUtils.convertImageToBase64("pdf/images/kenny.png"),
+                        "barcode" to BarcodeUtils.getBarCodeAsBase64("Todo-list ${todos.size}")
                     )
                 )
             }
