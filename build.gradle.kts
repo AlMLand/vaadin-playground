@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("com.vaadin") version "24.4.7"
     kotlin("jvm") version "1.9.24"
+    kotlin("plugin.jpa") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
 }
 
@@ -21,11 +22,11 @@ extra["flyingSaucerPdfItext5"] = "9.7.2"
 extra["googleZxing"] = "3.5.3"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.vaadin:vaadin-spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.vaadin:vaadin-spring-boot-starter")
     // excel
     implementation("org.apache.poi:poi-ooxml:${property("poiOoxmlVersion")}")
     // pdf
@@ -34,6 +35,8 @@ dependencies {
     // barcode in pdf
     implementation("com.google.zxing:core:${property("googleZxing")}")
     implementation("com.google.zxing:javase:${property("googleZxing")}")
+
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

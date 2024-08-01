@@ -24,7 +24,7 @@
         <th>Body</th>
         <th>Author</th>
     </tr>
-    <!--/*@thymesVar id="items" type="java.util.Collection<com.almland.vaadinplayground.todo.domain.Todo>"*/-->
+    <!--/*@thymesVar id="items" type="java.util.Collection<com.almland.vaadinplayground.domain.Todo>"*/-->
     <tr th:each="item:${items}">
         <td th:text="${item.title}"></td>
         <td th:text="${item.body}"></td>

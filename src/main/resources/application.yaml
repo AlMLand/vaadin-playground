@@ -1,3 +1,12 @@
 spring:
   application:
     name: vaadin-playground
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vaadin
+    username: vaadin
+    password: vaadin
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
