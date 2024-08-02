@@ -7,9 +7,7 @@ import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.springframework.stereotype.Service
 
-@Service
 internal class ExcelGenerator : FileGenerator<Collection<Todo>, Workbook> {
 
     companion object {
