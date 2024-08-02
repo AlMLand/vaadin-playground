@@ -15,7 +15,7 @@ internal class PersistenceCommandAdaptor(
     private val todoRepository: TodoRepository
 ) : PersistenceCommandPort {
 
-    override fun save(todo: Todo): UUID =
+    override fun create(todo: Todo): UUID =
         todoMapper
             .mapToTodoEntity(todo)
             .let { todoRepository.save(it).id }

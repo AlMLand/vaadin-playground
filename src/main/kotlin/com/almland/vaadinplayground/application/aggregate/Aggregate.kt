@@ -21,7 +21,7 @@ internal class Aggregate(
 
     override fun getAll(): Collection<Todo> = persistenceQueryPort.getAll()
 
-    override fun create(todo: Todo): UUID = persistenceCommandPort.save(todo)
+    override fun create(todo: Todo): UUID = persistenceCommandPort.create(todo)
 
     override fun deleteAll(ids: Collection<UUID>) = persistenceCommandPort.deleteAll(ids)
 
