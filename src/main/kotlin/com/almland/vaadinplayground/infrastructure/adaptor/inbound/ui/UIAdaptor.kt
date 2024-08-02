@@ -11,6 +11,7 @@ import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.Sel
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadExcelButton
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButton
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.GridCreator
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.ShowHideColumnButton
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.Broadcaster.register
 import com.vaadin.flow.component.AttachEvent
@@ -41,7 +42,8 @@ internal class UIAdaptor(
 
     private lateinit var userName: String
     private lateinit var broadcastRegistration: Registration
-    private var grid: Grid<Todo> = GridCreator.createTodoGrid()
+    private val showHideColumnButton = ShowHideColumnButton.create()
+    private var grid: Grid<Todo> = GridCreator.createTodoGrid(showHideColumnButton)
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
@@ -65,6 +67,7 @@ internal class UIAdaptor(
                 .create(grid, aggregateQueryPort, springTemplateEngine)
                 .also { horizontalLayout.add(it) }
 
+            horizontalLayout.add(showHideColumnButton)
             add(horizontalLayout)
         }
 
