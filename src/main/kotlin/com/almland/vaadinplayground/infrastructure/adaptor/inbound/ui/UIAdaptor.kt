@@ -51,6 +51,8 @@ internal class UIAdaptor(
         H2("$APPLICATION_START_TITLE $userName").also { title -> add(title) }
 
         HorizontalLayout().also { horizontalLayout ->
+            horizontalLayout.setWidthFull()
+
             AddButton
                 .create(userName, uiMapper, aggregateCommandPort)
                 .also { horizontalLayout.add(it) }
@@ -67,6 +69,7 @@ internal class UIAdaptor(
                 .create(grid, aggregateQueryPort, springTemplateEngine)
                 .also { horizontalLayout.add(it) }
 
+            showHideColumnButton.element.style.set("margin-left", "auto")
             horizontalLayout.add(showHideColumnButton)
             add(horizontalLayout)
         }

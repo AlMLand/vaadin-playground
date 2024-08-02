@@ -8,7 +8,7 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.textfield.TextField
 
-internal object AddDialogAddButton {
+internal object AddButton {
 
     private const val ADD_BUTTON_TEXT = "Add"
 

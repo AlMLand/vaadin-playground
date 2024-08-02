@@ -1,8 +1,8 @@
 package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog
 
 import com.almland.vaadinplayground.application.port.inbound.AggregateCommandPort
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog.button.AddDialogAddButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog.button.AddDialogCancelButton
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog.button.AddButton
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog.button.CancelButton
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -26,10 +26,10 @@ internal object AddDialog {
                 VerticalLayout()
                     .apply { add(title) }
                     .also { dialogLayout -> dialog.add(dialogLayout) }
-                AddDialogAddButton
+                AddButton
                     .create(dialog, title, userName, uiMapper, aggregateCommandPort)
                     .also { addButton -> dialog.footer.add(addButton) }
-                AddDialogCancelButton
+                CancelButton
                     .create(dialog)
                     .also { cancelButton -> dialog.footer.add(cancelButton) }
             }
