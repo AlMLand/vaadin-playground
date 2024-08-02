@@ -21,24 +21,22 @@ internal class Aggregate(
 
     override fun getAll(): Collection<Todo> = persistenceQueryPort.getAll()
 
-    override fun save(todo: Todo): UUID = persistenceCommandPort.save(todo)
+    override fun create(todo: Todo): UUID = persistenceCommandPort.save(todo)
 
     override fun deleteAll(ids: Collection<UUID>) = persistenceCommandPort.deleteAll(ids)
 
     override fun getComponentsToShowInPdf(todos: Set<Todo>): Map<String, Any> =
         pdfGenerator.getComponentsToShowInPdf(todos.toSet())
 
-    override fun createPdf(htmlTemplate: String): () -> ByteArrayInputStream = {
+    override fun createPdfAsStream(htmlTemplate: String): ByteArrayInputStream =
         ByteArrayInputStream(
             pdfGenerator
                 .createFile(htmlTemplate)
                 .use { it.toByteArray() }
         )
-    }
 
-    override fun getInputStreamExcel(todos: Collection<Todo>): () -> ByteArrayInputStream = {
+    override fun createExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream =
         ByteArrayOutputStream()
             .apply { excelGenerator.createFile(todos).write(this) }
             .let { ByteArrayInputStream(it.use { stream -> stream.toByteArray() }) }
-    }
 }

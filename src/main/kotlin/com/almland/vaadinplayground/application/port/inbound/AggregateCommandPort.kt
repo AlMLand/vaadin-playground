@@ -4,6 +4,6 @@ import com.almland.vaadinplayground.domain.Todo
 import java.util.UUID
 
 internal interface AggregateCommandPort {
-    fun save(todo: Todo): UUID
+    fun create(todo: Todo): UUID
     fun deleteAll(ids: Collection<UUID>)
 }
