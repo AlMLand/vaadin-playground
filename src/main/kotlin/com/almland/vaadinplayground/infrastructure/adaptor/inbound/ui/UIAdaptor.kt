@@ -41,7 +41,7 @@ internal class UIAdaptor(
 
     private lateinit var userName: String
     private lateinit var broadcastRegistration: Registration
-    private var grid: Grid<Todo> = GridCreator.createGrid(Todo::class.java)
+    private var grid: Grid<Todo> = GridCreator.createTodoGrid()
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
