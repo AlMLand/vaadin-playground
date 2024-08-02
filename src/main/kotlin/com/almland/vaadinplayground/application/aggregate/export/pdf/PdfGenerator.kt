@@ -8,15 +8,19 @@ import com.almland.vaadinplayground.application.aggregate.export.pdf.barcode.Bar
 import com.almland.vaadinplayground.application.aggregate.export.pdf.image.ImageUtils
 import com.almland.vaadinplayground.application.port.filegenerator.FileGenerator
 import com.almland.vaadinplayground.domain.Todo
-import java.io.ByteArrayOutputStream
+import org.xhtmlrenderer.pdf.ITextRenderer
 
-internal class PdfGenerator : FileGenerator<String, ByteArrayOutputStream> {
+internal class PdfGenerator : FileGenerator<String, ITextRenderer> {
 
     private enum class PdfComponent(val component: String) {
         ITEMS("items"), TITLE("title"), KENNY("kenny"), BARCODE("barcode")
     }
 
-    override fun createFile(t: String): ByteArrayOutputStream = HtmlToPdfConverter.createPdf(t)
+    override fun createFile(content: String): ITextRenderer =
+        ITextRenderer().apply {
+            setDocumentFromString(content)
+            layout()
+        }
 
     fun getComponentsToShowInPdf(todos: Set<Todo>): Map<String, Any> =
         mapOf(

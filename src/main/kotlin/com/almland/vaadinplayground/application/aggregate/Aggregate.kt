@@ -29,11 +29,9 @@ internal class Aggregate(
         pdfGenerator.getComponentsToShowInPdf(todos.toSet())
 
     override fun createPdfAsStream(htmlTemplate: String): ByteArrayInputStream =
-        ByteArrayInputStream(
-            pdfGenerator
-                .createFile(htmlTemplate)
-                .use { it.toByteArray() }
-        )
+        ByteArrayOutputStream()
+            .apply { pdfGenerator.createFile(htmlTemplate).createPDF(this) }
+            .let { ByteArrayInputStream(it.use { stream -> stream.toByteArray() }) }
 
     override fun createExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream =
         ByteArrayOutputStream()

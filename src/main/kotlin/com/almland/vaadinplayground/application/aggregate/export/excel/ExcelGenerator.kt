@@ -20,7 +20,7 @@ internal class ExcelGenerator : FileGenerator<Collection<Todo>, Workbook> {
 
     private enum class ExcelHeader { TITLE, BODY, AUTHOR }
 
-    override fun createFile(t: Collection<Todo>): Workbook =
+    override fun createFile(content: Collection<Todo>): Workbook =
         XSSFWorkbook().apply {
             createSheet(SHEET_NAME).also { sheet ->
                 getStyleHeader(this@apply).also { styleHeader ->
@@ -31,7 +31,7 @@ internal class ExcelGenerator : FileGenerator<Collection<Todo>, Workbook> {
                     }
                 }
                 getStyleBody(this@apply).also { styleBody ->
-                    t.forEachIndexed { index, todo ->
+                    content.forEachIndexed { index, todo ->
                         sheet.createRow(index + ROW_BODY_MAGNIFICATION).run {
                             createCell(ExcelHeader.TITLE.ordinal).setCellValue(todo.title)
                             createCell(ExcelHeader.BODY.ordinal).run { cellStyle = styleBody; setCellValue(todo.body) }
