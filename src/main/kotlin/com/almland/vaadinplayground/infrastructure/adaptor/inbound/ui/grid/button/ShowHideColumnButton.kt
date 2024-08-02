@@ -9,5 +9,8 @@ internal object ShowHideColumnButton {
 
     fun create(): Button =
         Button(SHOW_HIDE_COLUMNS_BUTTON_TEXT)
-            .apply { addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL) }
+            .apply {
+                element.style.set("margin-left", "auto")
+                addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_SMALL)
+            }
 }

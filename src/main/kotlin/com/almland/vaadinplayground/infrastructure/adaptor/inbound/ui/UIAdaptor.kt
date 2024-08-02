@@ -69,7 +69,6 @@ internal class UIAdaptor(
                 .create(grid, aggregateQueryPort, springTemplateEngine)
                 .also { horizontalLayout.add(it) }
 
-            showHideColumnButton.element.style.set("margin-left", "auto")
             horizontalLayout.add(showHideColumnButton)
             add(horizontalLayout)
         }
