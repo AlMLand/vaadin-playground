@@ -7,7 +7,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 
-internal object SelectAllButton {
+internal object SelectAllButtonBuilder {
 
     private const val SELECT_ALL_BUTTON_TEXT = "Select all"
 

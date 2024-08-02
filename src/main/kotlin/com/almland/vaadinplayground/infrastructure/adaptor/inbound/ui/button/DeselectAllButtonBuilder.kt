@@ -6,7 +6,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.VaadinIcon
 
-internal object DeselectAllButton {
+internal object DeselectAllButtonBuilder {
 
     private const val DESELECT_ALL_BUTTON_TEXT = "Deselect all"
 

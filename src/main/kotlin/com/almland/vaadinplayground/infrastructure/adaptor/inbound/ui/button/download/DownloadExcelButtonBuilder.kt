@@ -9,20 +9,20 @@ import com.vaadin.flow.component.html.Anchor
 import com.vaadin.flow.server.StreamResource
 import java.io.ByteArrayInputStream
 
-internal object DownloadExcelButton {
+internal object DownloadExcelButtonBuilder {
 
     private const val FILE_XLSX_NAME = "todos.xlsx"
     private const val DOWNLOAD_BUTTON_TEXT = "Export selected to Excel"
 
     fun create(grid: Grid<Todo>, aggregateQueryPort: AggregateQueryPort): Anchor =
-        Anchor(StreamResource(FILE_XLSX_NAME, getInputStreamExcel(grid, aggregateQueryPort)), null)
+        Anchor(StreamResource(FILE_XLSX_NAME, getExcelAsStream(grid, aggregateQueryPort)), null)
             .also { anchor ->
                 Button(DOWNLOAD_BUTTON_TEXT)
                     .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
                     .also { anchor.add(it) }
             }
 
-    private fun getInputStreamExcel(
+    private fun getExcelAsStream(
         grid: Grid<Todo>,
         aggregateQueryPort: AggregateQueryPort
     ): () -> ByteArrayInputStream =

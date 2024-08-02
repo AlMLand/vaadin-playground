@@ -4,16 +4,16 @@ import com.almland.vaadinplayground.application.port.inbound.AggregateCommandPor
 import com.almland.vaadinplayground.application.port.inbound.AggregateQueryPort
 import com.almland.vaadinplayground.application.port.inbound.UIPort
 import com.almland.vaadinplayground.domain.Todo
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.AddButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.DeselectAllButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.RemoveButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.SelectAllButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadExcelButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButton
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.GridCreator
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.ShowHideColumnButton
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.AddButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.DeselectAllButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.RemoveButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.SelectAllButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadExcelButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.GridCreatorBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.ShowHideColumnButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.Broadcaster.register
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.register
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.DetachEvent
 import com.vaadin.flow.component.grid.Grid
@@ -42,8 +42,8 @@ internal class UIAdaptor(
 
     private lateinit var userName: String
     private lateinit var broadcastRegistration: Registration
-    private val showHideColumnButton = ShowHideColumnButton.create()
-    private var grid: Grid<Todo> = GridCreator.createTodoGrid(showHideColumnButton)
+    private val showHideColumnButton = ShowHideColumnButtonBuilder.create()
+    private var grid: Grid<Todo> = GridCreatorBuilder.createTodoGrid(showHideColumnButton)
 
     override fun onAttach(attachEvent: AttachEvent?) {
         super.onAttach(attachEvent)
@@ -53,19 +53,19 @@ internal class UIAdaptor(
         HorizontalLayout().also { horizontalLayout ->
             horizontalLayout.setWidthFull()
 
-            AddButton
+            AddButtonBuilder
                 .create(userName, uiMapper, aggregateCommandPort)
                 .also { horizontalLayout.add(it) }
 
-            RemoveButton
+            RemoveButtonBuilder
                 .create(grid, userName, aggregateCommandPort)
                 .also { horizontalLayout.add(it) }
 
-            DownloadExcelButton
+            DownloadExcelButtonBuilder
                 .create(grid, aggregateQueryPort)
                 .also { horizontalLayout.add(it) }
 
-            DownloadPdfButton
+            DownloadPdfButtonBuilder
                 .create(grid, aggregateQueryPort, springTemplateEngine)
                 .also { horizontalLayout.add(it) }
 
@@ -76,11 +76,11 @@ internal class UIAdaptor(
         grid.also { refresh();add(it) }
 
         HorizontalLayout().also { horizontalLayout ->
-            SelectAllButton
+            SelectAllButtonBuilder
                 .create(grid, aggregateQueryPort)
                 .also { horizontalLayout.add(it) }
 
-            DeselectAllButton
+            DeselectAllButtonBuilder
                 .create(grid)
                 .also { horizontalLayout.add(it) }
 

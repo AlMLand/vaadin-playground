@@ -3,7 +3,7 @@ package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.butt
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 
-internal object ShowHideColumnButton {
+internal object ShowHideColumnButtonBuilder {
 
     private const val SHOW_HIDE_COLUMNS_BUTTON_TEXT = "Show/Hide columns"
 

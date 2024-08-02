@@ -13,8 +13,8 @@ import java.io.IOException
 internal object BarcodeUtils {
 
     private const val IMAGE_PNG = "png"
+    private const val DEFAULT_BARCODE = ""
     private const val WIDTH_MULTIPLICATOR = 11
-    private const val DEFAULT_RESPONSE_BARCODE = ""
 
     fun getBarCodeAsBase64(text: String): String =
         try {
@@ -25,10 +25,10 @@ internal object BarcodeUtils {
                 )
         } catch (ioE: IOException) {
             ioE.printStackTrace()
-            DEFAULT_RESPONSE_BARCODE
+            DEFAULT_BARCODE
         } catch (writeE: WriterException) {
             writeE.printStackTrace()
-            DEFAULT_RESPONSE_BARCODE
+            DEFAULT_BARCODE
         }
 
     private fun getBarCode(text: String): ByteArrayOutputStream =

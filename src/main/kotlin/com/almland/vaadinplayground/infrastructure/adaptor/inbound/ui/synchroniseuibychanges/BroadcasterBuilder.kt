@@ -6,7 +6,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import java.util.function.Consumer
 
-internal object Broadcaster {
+internal object BroadcasterBuilder {
 
     private val executor: Executor = Executors.newSingleThreadExecutor()
     private val listeners: MutableCollection<Consumer<String>> = LinkedList()
@@ -14,7 +14,7 @@ internal object Broadcaster {
     @Synchronized
     fun register(consumer: Consumer<String>): Registration {
         listeners.add(consumer)
-        return Registration { synchronized(Broadcaster::class.java) { listeners.remove(consumer) } }
+        return Registration { synchronized(BroadcasterBuilder::class.java) { listeners.remove(consumer) } }
     }
 
     @Synchronized

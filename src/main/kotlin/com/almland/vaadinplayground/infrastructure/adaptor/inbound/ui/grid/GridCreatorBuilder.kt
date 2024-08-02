@@ -5,8 +5,8 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.grid.Grid
 
 
-internal object GridCreator {
-    
+internal object GridCreatorBuilder {
+
     fun createTodoGrid(showHideColumnButton: Button): Grid<Todo> =
         Grid(Todo::class.java, false)
             .apply {

@@ -2,12 +2,13 @@ package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button
 
 import com.almland.vaadinplayground.application.port.inbound.AggregateCommandPort
 import com.almland.vaadinplayground.domain.Todo
-import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.Broadcaster.broadcast
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.broadcast
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
+import java.util.UUID
 
-internal object RemoveButton {
+internal object RemoveButtonBuilder {
 
     private const val VERIFY_CONDITION = 'a'
     private const val REMOVE_BUTTON_TEXT = "Remove"
@@ -21,8 +22,11 @@ internal object RemoveButton {
             isVisible = userName.startsWith(VERIFY_CONDITION)
             addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_SMALL)
             addClickListener {
-                aggregateCommandPort.deleteAll(grid.selectedItems.map { it.id })
+                aggregateCommandPort.deleteAll(getIds(grid))
                 broadcast("Todo(s) removed by $userName")
             }
         }
+
+    private fun getIds(grid: Grid<Todo>): Collection<UUID> =
+        grid.selectedItems.map { it.id }
 }

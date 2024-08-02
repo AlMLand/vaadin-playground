@@ -3,7 +3,7 @@ package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.dialog.bu
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dialog.Dialog
 
-internal object CancelButton {
+internal object CancelButtonBuilder {
 
     private const val CANCEL_BUTTON_TEXT = "Cancel"
 

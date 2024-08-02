@@ -11,11 +11,11 @@ import java.io.ByteArrayInputStream
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring6.SpringTemplateEngine
 
-internal object DownloadPdfButton {
+internal object DownloadPdfButtonBuilder {
 
     private const val FILE_PDF_NAME = "todos.pdf"
     private const val OPEN_PDF_IN_NEW_TAB = "_blank"
-    private const val TEMPLATE_TAGRET_PATH = "pdf/todos.html"
+    private const val TEMPLATE_TARGET_PATH = "pdf/todos.html"
     private const val DOWNLOAD_BUTTON_TEXT = "Export selected to PDF"
 
     fun create(
@@ -23,7 +23,7 @@ internal object DownloadPdfButton {
         aggregateQueryPort: AggregateQueryPort,
         springTemplateEngine: SpringTemplateEngine
     ): Anchor =
-        Anchor(StreamResource(FILE_PDF_NAME, getInputStreamPdf(grid, aggregateQueryPort, springTemplateEngine)), null)
+        Anchor(StreamResource(FILE_PDF_NAME, getPdfAsStream(grid, aggregateQueryPort, springTemplateEngine)), null)
             .apply { setTarget(OPEN_PDF_IN_NEW_TAB) }
             .also { downloadPdf ->
                 Button(DOWNLOAD_BUTTON_TEXT)
@@ -31,14 +31,14 @@ internal object DownloadPdfButton {
                     .also { downloadPdf.add(it) }
             }
 
-    private fun getInputStreamPdf(
+    private fun getPdfAsStream(
         grid: Grid<Todo>,
         aggregateQueryPort: AggregateQueryPort,
         springTemplateEngine: SpringTemplateEngine
     ): () -> ByteArrayInputStream = {
         Context()
             .apply { setVariables(aggregateQueryPort.getComponentsToShowInPdf(grid.selectedItems)) }
-            .let { springTemplateEngine.process(TEMPLATE_TAGRET_PATH, it) }
+            .let { springTemplateEngine.process(TEMPLATE_TARGET_PATH, it) }
             .let { aggregateQueryPort.createPdfAsStream(it) }
     }
 }
