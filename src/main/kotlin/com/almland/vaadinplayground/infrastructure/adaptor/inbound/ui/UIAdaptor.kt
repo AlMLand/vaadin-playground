@@ -13,6 +13,7 @@ import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.butto
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.SelectAllButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.ShowHideColumnButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.broadcast
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.register
 import com.vaadin.flow.component.AttachEvent
 import com.vaadin.flow.component.DetachEvent
@@ -21,6 +22,8 @@ import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.upload.Upload
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import com.vaadin.flow.router.BeforeEnterEvent
 import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.HasDynamicTitle
@@ -85,6 +88,15 @@ internal class UIAdaptor(
                 .also { horizontalLayout.add(it) }
 
             add(horizontalLayout)
+        }
+
+        MemoryBuffer().also { memoryBuffer ->
+            Upload(memoryBuffer).apply {
+                addSucceededListener {
+                    aggregateCommandPort.createFromStream(memoryBuffer.inputStream)
+                    broadcast("New file with name: ${it.fileName} uploaded by $userName")
+                }
+            }.also { add(it) }
         }
 
         attachEvent?.ui.also { ui ->

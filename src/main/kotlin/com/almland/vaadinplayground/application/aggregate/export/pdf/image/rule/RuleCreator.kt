@@ -3,6 +3,7 @@ package com.almland.vaadinplayground.application.aggregate.export.pdf.image.rule
 import java.util.function.Supplier
 
 internal object RuleCreator {
+
     fun createRules(imagePath: String): Map<ImageExtensionCondition, Rule> =
         mutableMapOf<ImageExtensionCondition, Rule>().apply {
             this[ImageExtensionCondition.IMAGE_PNG] = createImagePng(imagePath)

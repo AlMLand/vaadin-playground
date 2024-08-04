@@ -20,6 +20,11 @@ internal class PersistenceCommandAdaptor(
             .mapToTodoEntity(todo)
             .let { todoRepository.save(it).id }
 
+    override fun createAll(todos: Collection<Todo>): Int =
+        todoMapper
+            .mapToTodoEntities(todos)
+            .let { todoRepository.saveAll(it).size }
+
     override fun deleteAll(ids: Collection<UUID>) =
         todoRepository.deleteAllById(ids)
 }

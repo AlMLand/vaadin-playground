@@ -1,6 +1,7 @@
 package com.almland.vaadinplayground.application.aggregate
 
-import com.almland.vaadinplayground.application.aggregate.export.excel.ExcelGenerator
+import com.almland.vaadinplayground.application.aggregate.export.excel.generator.ExcelGenerator
+import com.almland.vaadinplayground.application.aggregate.export.excel.reader.ExcelReader
 import com.almland.vaadinplayground.application.aggregate.export.pdf.PdfGenerator
 import com.almland.vaadinplayground.application.aggregate.export.pdf.barcode.BarcodeUtils
 import com.almland.vaadinplayground.application.aggregate.export.pdf.image.ImageUtils
@@ -11,6 +12,7 @@ import com.almland.vaadinplayground.application.port.outbound.PersistenceQueryPo
 import com.almland.vaadinplayground.domain.Todo
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.util.UUID
 
 internal class Aggregate(
@@ -22,6 +24,10 @@ internal class Aggregate(
     private val excelGenerator = ExcelGenerator()
 
     override fun create(todo: Todo): UUID = persistenceCommandPort.create(todo)
+
+    override fun createFromStream(inputStream: InputStream): Int =
+        ExcelReader.readFromFile(inputStream)
+            .let { persistenceCommandPort.createAll(it) }
 
     override fun deleteAll(ids: Collection<UUID>) = persistenceCommandPort.deleteAll(ids)
 

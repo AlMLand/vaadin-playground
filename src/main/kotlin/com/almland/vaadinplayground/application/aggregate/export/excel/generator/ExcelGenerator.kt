@@ -1,4 +1,4 @@
-package com.almland.vaadinplayground.application.aggregate.export.excel
+package com.almland.vaadinplayground.application.aggregate.export.excel.generator
 
 import com.almland.vaadinplayground.application.port.filegenerator.FileGenerator
 import com.almland.vaadinplayground.domain.Todo

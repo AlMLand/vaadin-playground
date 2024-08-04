@@ -14,4 +14,7 @@ internal class TodoMapper {
 
     fun mapToTodoEntity(todo: Todo): TodoEntity =
         with(todo) { TodoEntity(id, title, body, author, createdAt) }
+
+    fun mapToTodoEntities(todos: Collection<Todo>) =
+        todos.map { mapToTodoEntity(it) }
 }
