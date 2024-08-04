@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.UUID
 
-internal class Aggregate(
+internal class TodoAggregate(
     private val persistenceQueryPort: PersistenceQueryPort,
     private val persistenceCommandPort: PersistenceCommandPort
 ) : AggregateQueryPort, AggregateCommandPort {

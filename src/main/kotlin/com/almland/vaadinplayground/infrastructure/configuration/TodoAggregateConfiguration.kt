@@ -1,16 +1,16 @@
 package com.almland.vaadinplayground.infrastructure.configuration
 
-import com.almland.vaadinplayground.application.aggregate.Aggregate
+import com.almland.vaadinplayground.application.aggregate.TodoAggregate
 import com.almland.vaadinplayground.application.port.outbound.PersistenceCommandPort
 import com.almland.vaadinplayground.application.port.outbound.PersistenceQueryPort
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-internal class AggregateConfiguration {
+internal class TodoAggregateConfiguration {
     @Bean
-    fun aggregate(
+    fun todoAggregate(
         persistenceQueryPort: PersistenceQueryPort,
         persistenceCommandPort: PersistenceCommandPort
-    ): Aggregate = Aggregate(persistenceQueryPort, persistenceCommandPort)
+    ): TodoAggregate = TodoAggregate(persistenceQueryPort, persistenceCommandPort)
 }
