@@ -30,6 +30,15 @@ internal object UploadExcelButtonBuilder {
                         .show(it.errorMessage, 2000, Notification.Position.BOTTOM_CENTER)
                         .apply { addThemeVariants(NotificationVariant.LUMO_ERROR) }
                 }
+                addFailedListener {
+                    Notification
+                        .show(
+                            "Internal exception: ${it.reason.message} is occurred, by upload from file: ${it.fileName}",
+                            2000,
+                            Notification.Position.BOTTOM_CENTER
+                        )
+                        .apply { addThemeVariants(NotificationVariant.LUMO_ERROR) }
+                }
             }
         }
 }
