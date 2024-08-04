@@ -2,6 +2,10 @@ package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.do
 
 import com.almland.vaadinplayground.application.port.inbound.AggregateQueryPort
 import com.almland.vaadinplayground.domain.Todo
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButtonBuilder.PdfComponent.BARCODE
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButtonBuilder.PdfComponent.ITEMS
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButtonBuilder.PdfComponent.KENNY
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download.DownloadPdfButtonBuilder.PdfComponent.TITLE
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
@@ -17,6 +21,10 @@ internal object DownloadPdfButtonBuilder {
     private const val OPEN_PDF_IN_NEW_TAB = "_blank"
     private const val TEMPLATE_TARGET_PATH = "pdf/todos.html"
     private const val DOWNLOAD_BUTTON_TEXT = "Export selected to PDF"
+
+    private enum class PdfComponent(val component: String) {
+        ITEMS("items"), TITLE("title"), KENNY("kenny"), BARCODE("barcode")
+    }
 
     fun create(
         grid: Grid<Todo>,
@@ -37,8 +45,19 @@ internal object DownloadPdfButtonBuilder {
         springTemplateEngine: SpringTemplateEngine
     ): () -> ByteArrayInputStream = {
         Context()
-            .apply { setVariables(aggregateQueryPort.getComponentsToShowInPdf(grid.selectedItems)) }
+            .apply { setVariables(getComponentsToShowInPdf(grid.selectedItems, aggregateQueryPort)) }
             .let { springTemplateEngine.process(TEMPLATE_TARGET_PATH, it) }
-            .let { aggregateQueryPort.createPdfAsStream(it) }
+            .let { aggregateQueryPort.getPdfAsStream(it) }
     }
+
+    private fun getComponentsToShowInPdf(
+        todos: Set<Todo>,
+        aggregateQueryPort: AggregateQueryPort
+    ): Map<String, Any> =
+        mapOf(
+            ITEMS.component to todos,
+            TITLE.component to "Todos list ${todos.size}",
+            KENNY.component to aggregateQueryPort.getImageAsBase64("pdf/images/kenny.png"),
+            BARCODE.component to aggregateQueryPort.getBarCodeAsBase64("Todo-list ${todos.size}")
+        )
 }

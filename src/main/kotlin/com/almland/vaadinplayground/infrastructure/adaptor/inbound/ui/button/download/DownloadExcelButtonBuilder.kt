@@ -26,5 +26,5 @@ internal object DownloadExcelButtonBuilder {
         grid: Grid<Todo>,
         aggregateQueryPort: AggregateQueryPort
     ): () -> ByteArrayInputStream =
-        { aggregateQueryPort.createExcelAsStream(grid.selectedItems) }
+        { aggregateQueryPort.getExcelAsStream(grid.selectedItems) }
 }

@@ -5,7 +5,8 @@ import java.io.ByteArrayInputStream
 
 internal interface AggregateQueryPort {
     fun getAll(): Collection<Todo>
-    fun getComponentsToShowInPdf(todos: Set<Todo>): Map<String, Any>
-    fun createPdfAsStream(htmlTemplate: String): ByteArrayInputStream
-    fun createExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream
+    fun getImageAsBase64(imagePath: String): String
+    fun getBarCodeAsBase64(text: String): String
+    fun getPdfAsStream(htmlTemplate: String): ByteArrayInputStream
+    fun getExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream
 }
