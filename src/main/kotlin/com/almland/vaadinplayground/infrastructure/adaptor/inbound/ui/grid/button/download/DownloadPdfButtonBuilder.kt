@@ -10,6 +10,8 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Anchor
+import com.vaadin.flow.component.icon.Icon
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.server.StreamResource
 import java.io.ByteArrayInputStream
 import org.thymeleaf.context.Context
@@ -34,7 +36,7 @@ internal object DownloadPdfButtonBuilder {
         Anchor(StreamResource(FILE_PDF_NAME, getPdfAsStream(grid, aggregateQueryPort, springTemplateEngine)), null)
             .apply { setTarget(OPEN_PDF_IN_NEW_TAB) }
             .also { downloadPdf ->
-                Button(DOWNLOAD_BUTTON_TEXT)
+                Button(DOWNLOAD_BUTTON_TEXT, Icon(VaadinIcon.DOWNLOAD))
                     .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
                     .also { downloadPdf.add(it) }
             }

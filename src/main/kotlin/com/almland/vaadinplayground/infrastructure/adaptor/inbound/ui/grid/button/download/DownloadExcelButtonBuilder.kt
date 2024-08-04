@@ -6,6 +6,8 @@ import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.Anchor
+import com.vaadin.flow.component.icon.Icon
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.server.StreamResource
 import java.io.ByteArrayInputStream
 
@@ -17,7 +19,7 @@ internal object DownloadExcelButtonBuilder {
     fun create(grid: Grid<Todo>, aggregateQueryPort: AggregateQueryPort): Anchor =
         Anchor(StreamResource(FILE_XLSX_NAME, getExcelAsStream(grid, aggregateQueryPort)), null)
             .also { anchor ->
-                Button(DOWNLOAD_BUTTON_TEXT)
+                Button(DOWNLOAD_BUTTON_TEXT, Icon(VaadinIcon.DOWNLOAD))
                     .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
                     .also { anchor.add(it) }
             }
