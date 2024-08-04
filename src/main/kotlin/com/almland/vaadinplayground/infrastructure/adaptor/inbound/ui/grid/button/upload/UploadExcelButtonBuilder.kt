@@ -2,6 +2,8 @@ package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.butt
 
 import com.almland.vaadinplayground.application.port.inbound.AggregateCommandPort
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.broadcast
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.notification.NotificationVariant
 import com.vaadin.flow.component.upload.Upload
@@ -9,11 +11,15 @@ import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 
 internal object UploadExcelButtonBuilder {
 
+    private const val UPLOAD_BUTTON_TEXT = "Upload Excel"
     private val acceptedFileType = arrayOf("application/xlsx", ".xlsx")
 
     fun create(userName: String, aggregateCommandPort: AggregateCommandPort): Upload =
         MemoryBuffer().let { memoryBuffer ->
             Upload(memoryBuffer).apply {
+                Button(UPLOAD_BUTTON_TEXT)
+                    .apply { addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SMALL) }
+                    .also { uploadButton = it }
                 setAcceptedFileTypes(*acceptedFileType)
                 addSucceededListener {
                     aggregateCommandPort.createFromStream(memoryBuffer.inputStream)
