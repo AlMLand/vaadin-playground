@@ -1,4 +1,4 @@
-package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button
+package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant

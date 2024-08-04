@@ -1,4 +1,4 @@
-package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.button.download
+package com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.download
 
 import com.almland.vaadinplayground.application.port.inbound.AggregateQueryPort
 import com.almland.vaadinplayground.domain.Todo
