@@ -10,3 +10,20 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      # threshold to decision if a query is slow (milliseconds)
+      hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 15
+      # to generate hibernate statistics set to 'true', only for development
+      hibernate.generate_statistics: false
+
+logging:
+  level:
+    root: info
+    com.vaadin.flow: info
+    org.hibernate: info
+    # hibernate write a log message for each query that takes longer than the specified threshold, set to 'info'
+    org.hibernate.SQL_SLOW: info
+    # check the number of executed queries and their SQL statements, set to 'debug'
+    org.hibernate.sql: info
+    # show used bind query parameters, set to 'trace'
+    org.hibernate.orm.jdbc.bind: info

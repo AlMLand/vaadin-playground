@@ -13,6 +13,7 @@ import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.butto
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.SelectAllButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.ShowHideColumnButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.upload.UploadExcelButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.layout.CurrentAppLayout
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.synchroniseuibychanges.BroadcasterBuilder.register
 import com.vaadin.flow.component.AttachEvent
@@ -33,7 +34,7 @@ private const val USER_NAME_URL_PARAMETER = "name"
 private const val APPLICATION_START_TITLE = "Todo application:"
 private const val EVENT_NOT_AVAILABLE_DEFAULT = "No user name available"
 
-@Route("todos/:$USER_NAME_URL_PARAMETER")
+@Route(layout = CurrentAppLayout::class, value = "todos/:$USER_NAME_URL_PARAMETER")
 internal class UIAdaptor(
     private val uiMapper: UIMapper,
     private val aggregateQueryPort: AggregateQueryPort,
