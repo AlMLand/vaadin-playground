@@ -8,5 +8,5 @@ internal interface AggregateQueryPort {
     fun getImageAsBase64(imagePath: String): String
     fun getBarCodeAsBase64(text: String): String
     fun getPdfAsStream(htmlTemplate: String): ByteArrayInputStream
-    fun getExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream
+    fun getExcelAsStream(todos: Collection<Todo>? = null): ByteArrayInputStream
 }

@@ -12,6 +12,7 @@ import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.butto
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.DeselectAllButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.SelectAllButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.table.ShowHideColumnButtonBuilder
+import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.upload.DownloadExampleExcelButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.grid.button.upload.UploadExcelButtonBuilder
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.layout.CurrentAppLayout
 import com.almland.vaadinplayground.infrastructure.adaptor.inbound.ui.mapper.UIMapper
@@ -21,6 +22,7 @@ import com.vaadin.flow.component.DetachEvent
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.notification.Notification
+import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.BeforeEnterEvent
@@ -89,9 +91,19 @@ internal class UIAdaptor(
             add(horizontalLayout)
         }
 
-        UploadExcelButtonBuilder
-            .create(userName, aggregateCommandPort)
-            .also { add(it) }
+        HorizontalLayout().also { horizontalLayout ->
+            horizontalLayout.alignItems = FlexComponent.Alignment.CENTER
+
+            DownloadExampleExcelButtonBuilder
+                .create(aggregateQueryPort)
+                .also { horizontalLayout.add(it) }
+
+            UploadExcelButtonBuilder
+                .create(userName, aggregateCommandPort)
+                .also { horizontalLayout.add(it) }
+
+            add(horizontalLayout)
+        }
 
         attachEvent?.ui.also { ui ->
             broadcastRegistration = register { message ->

@@ -5,7 +5,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer
 
 internal class PdfGenerator : FileGenerator<String, ITextRenderer> {
 
-    override fun createFile(content: String): ITextRenderer =
+    override fun createFile(content: String?): ITextRenderer =
         ITextRenderer().apply {
             setDocumentFromString(content)
             layout()

@@ -42,7 +42,7 @@ internal class TodoAggregate(
             .apply { pdfGenerator.createFile(htmlTemplate).createPDF(this) }
             .let { ByteArrayInputStream(it.use { stream -> stream.toByteArray() }) }
 
-    override fun getExcelAsStream(todos: Collection<Todo>): ByteArrayInputStream =
+    override fun getExcelAsStream(todos: Collection<Todo>?): ByteArrayInputStream =
         ByteArrayOutputStream()
             .apply { excelGenerator.createFile(todos).write(this) }
             .let { ByteArrayInputStream(it.use { stream -> stream.toByteArray() }) }
